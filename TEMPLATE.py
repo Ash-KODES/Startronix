@@ -68,6 +68,7 @@ def handle_movement(keys_pressed):
 def handle_shooting(keys_pressed):
     global YELLOW_BULLETS, RED_BULLETS
 
+
     if keys_pressed[pygame.K_SPACE]:
         # Shoot a bullet from the yellow spaceship
         yellow_bullet = [yellow_x + SPACESHIP_WIDTH, yellow_y + SPACESHIP_HEIGHT // 2 - BULLET_HEIGHT // 2]
