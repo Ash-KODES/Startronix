@@ -63,23 +63,23 @@ def handle_movement(keys_pressed):
     global yellow_x, yellow_y, red_x, red_y
 
     # Yellow spaceship controls
-    if keys_pressed[pygame.K_a]:  # A key
+    if keys_pressed[pygame.K_a] and yellow_x > 0:  # A key
         yellow_x -= SPACESHIP_SPEED
-    if keys_pressed[pygame.K_d]:  # D key
+    if keys_pressed[pygame.K_d] and yellow_x + SPACESHIP_WIDTH < WIDTH:  # D key
         yellow_x += SPACESHIP_SPEED
-    if keys_pressed[pygame.K_w]:  # W key
+    if keys_pressed[pygame.K_w] and yellow_y > 0:  # W key
         yellow_y -= SPACESHIP_SPEED
-    if keys_pressed[pygame.K_s]:  # S key
+    if keys_pressed[pygame.K_s] and yellow_y + SPACESHIP_HEIGHT < HEIGHT:  # S key
         yellow_y += SPACESHIP_SPEED
 
     # Red spaceship controls
-    if keys_pressed[pygame.K_LEFT]:  # Left Arrow
+    if keys_pressed[pygame.K_LEFT] and red_x > 0:  # Left Arrow
         red_x -= SPACESHIP_SPEED
-    if keys_pressed[pygame.K_RIGHT]:  # Right Arrow
+    if keys_pressed[pygame.K_RIGHT] and red_x + SPACESHIP_WIDTH < WIDTH:  # Right Arrow
         red_x += SPACESHIP_SPEED
-    if keys_pressed[pygame.K_UP]:  # Up Arrow
+    if keys_pressed[pygame.K_UP] and red_y > 0:  # Up Arrow
         red_y -= SPACESHIP_SPEED
-    if keys_pressed[pygame.K_DOWN]:  # Down Arrow
+    if keys_pressed[pygame.K_DOWN] and red_y + SPACESHIP_HEIGHT < HEIGHT:  # Down Arrow
         red_y += SPACESHIP_SPEED
 
 def handle_shooting(keys_pressed):
