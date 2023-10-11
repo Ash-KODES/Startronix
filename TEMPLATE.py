@@ -1,6 +1,9 @@
 import pygame
 import os
 
+# Initialize Pygame
+pygame.init()
+
 WIDTH, HEIGHT = 1000, 600
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("PYGAME")
@@ -32,6 +35,13 @@ BULLET_SPEED = 7
 YELLOW_BULLETS = []
 RED_BULLETS = []
 
+# Initialize points
+yellow_points = 0
+red_points = 0
+
+# Create fonts for displaying points
+font = pygame.font.Font(pygame.font.get_default_font(), 36)
+
 def draw_window():
     WIN.fill(WHITE)
     WIN.blit(YELLOW_SHIP, (yellow_x, yellow_y))
@@ -40,6 +50,13 @@ def draw_window():
         WIN.blit(YELLOW_BULLET, (bullet[0], bullet[1]))
     for bullet in RED_BULLETS:
         WIN.blit(RED_BULLET, (bullet[0], bullet[1]))
+
+    # Display points on the screen
+    yellow_points_text = font.render(f"Yellow: {yellow_points}", True, (255, 255, 0))
+    red_points_text = font.render(f"Red: {red_points}", True, (255, 0, 0))
+    WIN.blit(yellow_points_text, (10, 10))
+    WIN.blit(red_points_text, (WIDTH - 150, 10))
+
     pygame.display.update()
 
 def handle_movement(keys_pressed):
@@ -68,7 +85,6 @@ def handle_movement(keys_pressed):
 def handle_shooting(keys_pressed):
     global YELLOW_BULLETS, RED_BULLETS
 
-
     if keys_pressed[pygame.K_SPACE]:
         # Shoot a bullet from the yellow spaceship
         yellow_bullet = [yellow_x + SPACESHIP_WIDTH, yellow_y + SPACESHIP_HEIGHT // 2 - BULLET_HEIGHT // 2]
@@ -92,6 +108,21 @@ def move_bullets():
     YELLOW_BULLETS = [bullet for bullet in YELLOW_BULLETS if 0 < bullet[0] < WIDTH]
     RED_BULLETS = [bullet for bullet in RED_BULLETS if 0 < bullet[0] < WIDTH]
 
+def check_collisions():
+    global yellow_points, red_points
+
+    # Check if a yellow bullet hits the red spaceship
+    for bullet in YELLOW_BULLETS:
+        if red_x < bullet[0] + BULLET_WIDTH < red_x + SPACESHIP_WIDTH and red_y < bullet[1] < red_y + SPACESHIP_HEIGHT:
+            yellow_points += 1
+            YELLOW_BULLETS.remove(bullet)
+
+    # Check if a red bullet hits the yellow spaceship
+    for bullet in RED_BULLETS:
+        if yellow_x < bullet[0] < yellow_x + SPACESHIP_WIDTH and yellow_y < bullet[1] < yellow_y + SPACESHIP_HEIGHT:
+            red_points += 1
+            RED_BULLETS.remove(bullet)
+
 def main():
     clock = pygame.time.Clock()
     run = True
@@ -106,6 +137,7 @@ def main():
         handle_movement(keys_pressed)
         handle_shooting(keys_pressed)
         move_bullets()
+        check_collisions()
         draw_window()
 
     pygame.quit()
